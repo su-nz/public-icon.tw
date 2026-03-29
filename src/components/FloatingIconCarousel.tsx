@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import type { CSSProperties } from 'react'
 import { useMemo } from 'react'
 import type { IconRecord } from '@/lib/types'
 
@@ -35,17 +36,13 @@ export function FloatingIconCarousel({ icons, onSelectIcon }: FloatingIconCarous
       <div className="pointer-events-none absolute -left-24 -top-16 h-40 w-40 rounded-full bg-blue-300/30 blur-3xl" />
       <div className="pointer-events-none absolute -right-20 -bottom-16 h-36 w-36 rounded-full bg-cyan-300/30 blur-3xl" />
 
-      <motion.div
-        className="relative flex h-[160px] sm:h-[185px] lg:h-[210px]"
-        animate={{ x: ['0%', '-50%'] }}
-        transition={{
-          duration: MARQUEE_DURATION,
-          ease: 'linear',
-          repeat: Infinity,
-          repeatType: 'loop',
-        }}
+      <div
+        className="animate-marquee-track relative flex h-[160px] w-max sm:h-[185px] lg:h-[210px]"
+        style={{ '--marquee-duration': `${MARQUEE_DURATION}s` } as CSSProperties}
       >
         {renderIcons.map((icon, index) => {
+          const phaseIndex = index % iconSequence.length
+
           const card = (
             <motion.div
               animate={{ y: [0, -8, 0] }}
@@ -53,7 +50,7 @@ export function FloatingIconCarousel({ icons, onSelectIcon }: FloatingIconCarous
                 duration: 3,
                 ease: 'easeInOut',
                 repeat: Infinity,
-                delay: FLOAT_DELAYS[index % FLOAT_DELAYS.length],
+                delay: FLOAT_DELAYS[phaseIndex % FLOAT_DELAYS.length],
               }}
               className="relative h-full overflow-hidden rounded-2xl border border-blue-100 bg-gradient-to-br from-white to-blue-50 shadow-soft"
             >
@@ -69,7 +66,7 @@ export function FloatingIconCarousel({ icons, onSelectIcon }: FloatingIconCarous
 
           if (!onSelectIcon) {
             return (
-              <div key={`${icon.id}-${index}`} className="w-1/3 shrink-0 px-1.5 sm:px-2">
+              <div key={`${icon.id}-${index}`} className="w-[132px] shrink-0 px-1.5 sm:w-[170px] sm:px-2 lg:w-[190px]">
                 {card}
               </div>
             )
@@ -81,13 +78,13 @@ export function FloatingIconCarousel({ icons, onSelectIcon }: FloatingIconCarous
               type="button"
               aria-label={icon.name}
               onClick={() => onSelectIcon(icon)}
-              className="w-1/3 shrink-0 px-1.5 text-left sm:px-2"
+              className="w-[132px] shrink-0 px-1.5 text-left sm:w-[170px] sm:px-2 lg:w-[190px]"
             >
               {card}
             </button>
           )
         })}
-      </motion.div>
+      </div>
     </div>
   )
 }

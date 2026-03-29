@@ -1,6 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+import { BackToTopButton } from '@/components/BackToTopButton'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 
@@ -13,7 +14,12 @@ export function AppChrome({ children }: AppChromeProps) {
   const isQuickViewPage = pathname === '/quick'
 
   if (isQuickViewPage) {
-    return <main>{children}</main>
+    return (
+      <>
+        <main>{children}</main>
+        <BackToTopButton />
+      </>
+    )
   }
 
   return (
@@ -21,6 +27,7 @@ export function AppChrome({ children }: AppChromeProps) {
       <Header />
       <main>{children}</main>
       <Footer />
+      <BackToTopButton />
     </>
   )
 }
