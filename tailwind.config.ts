@@ -19,7 +19,16 @@ const config: Config = {
         border: '#E2E8F0',
       },
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+        sans: [
+          'var(--font-plus-jakarta)',
+          'var(--font-noto-sans-tc)',
+          'Plus Jakarta Sans',
+          'Noto Sans TC',
+          'PingFang TC',
+          'Microsoft JhengHei',
+          'system-ui',
+          'sans-serif',
+        ],
       },
       boxShadow: {
         'soft': '0 4px 20px -2px rgba(37, 99, 235, 0.12)',

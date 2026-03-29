@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Plus_Jakarta_Sans } from 'next/font/google'
+import { Noto_Sans_TC, Plus_Jakarta_Sans } from 'next/font/google'
 import Script from 'next/script'
 import { AppChrome } from '@/components/AppChrome'
 import { SITE_DESCRIPTION, SITE_NAME } from '@/lib/site'
@@ -11,6 +11,13 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-plus-jakarta',
+})
+
+const notoSansTc = Noto_Sans_TC({
+  weight: ['400', '500', '700', '800'],
+  display: 'swap',
+  variable: '--font-noto-sans-tc',
+  preload: false,
 })
 
 export const metadata: Metadata = {
@@ -33,7 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-Hant">
-      <body className={`${plusJakartaSans.variable} font-sans`}>
+      <body className={`${plusJakartaSans.variable} ${notoSansTc.variable} font-sans`}>
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
           strategy="afterInteractive"
