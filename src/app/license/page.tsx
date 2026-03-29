@@ -16,8 +16,7 @@ export default function LicensePage() {
         <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
           <h2 className="text-xl font-bold text-slate-900">1. 圖標授權（CC BY 4.0）</h2>
           <p className="mt-2 text-slate-700">
-            CNS16282 所提及圖標可依 CC BY 4.0 使用，包含商業使用與改作；惟必須保留來源標示，且修改後的圖標仍應符合
-            相關法規與場域規範。
+            CNS16282 所提及圖標可依 CC BY 4.0 使用，包含商業使用與改作；惟必須保留來源標示，且修改後的圖標仍應符合相關法規與場域規範。
           </p>
           <a
             href="https://creativecommons.org/licenses/by/4.0/deed.zh_Hant"
