@@ -15,19 +15,19 @@ export function AppChrome({ children }: AppChromeProps) {
 
   if (isQuickViewPage) {
     return (
-      <>
-        <main>{children}</main>
+      <div className="flex min-h-screen flex-col">
+        <main className="flex-1">{children}</main>
         <BackToTopButton />
-      </>
+      </div>
     )
   }
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Header />
-      <main>{children}</main>
+      <main className="flex-1">{children}</main>
       <Footer />
       <BackToTopButton />
-    </>
+    </div>
   )
 }

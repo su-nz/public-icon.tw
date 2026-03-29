@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Mail } from 'lucide-react'
 import { REPO_NAME } from '@/lib/site'
 
 const GITHUB_URL = `https://github.com/${REPO_NAME}`
@@ -49,12 +50,24 @@ export function Footer() {
       <div className="border-t border-slate-800/80 px-4 py-4 text-xs text-slate-500 sm:px-6">
         <div className="mx-auto flex w-full max-w-8xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} public-icon.tw</p>
-          <div className="flex flex-col gap-1 sm:items-end">
-            <a href="https://github.com/su-nz" target="_blank" rel="noreferrer" className="transition-colors hover:text-slate-300">
-              作者：github.com/su-nz
+          <div className="flex flex-wrap items-center gap-2 sm:justify-end">
+            <a
+              href="https://github.com/su-nz"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900/35 px-3 py-1.5 transition-colors hover:border-slate-500 hover:text-slate-300"
+            >
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden="true">
+                <path d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.016-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.084 1.84 1.237 1.84 1.237 1.07 1.833 2.809 1.304 3.495.997.108-.775.418-1.304.762-1.604-2.665-.305-5.467-1.335-5.467-5.932 0-1.31.468-2.381 1.236-3.221-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.003-.404c1.018.005 2.042.137 3.003.404 2.29-1.552 3.296-1.23 3.296-1.23.655 1.652.243 2.873.12 3.176.77.84 1.235 1.911 1.235 3.221 0 4.61-2.807 5.624-5.48 5.921.43.372.823 1.102.823 2.222 0 1.604-.015 2.896-.015 3.286 0 .322.216.694.825.576C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+              </svg>
+              作者
             </a>
-            <a href="mailto:icon@sunz.tw" className="transition-colors hover:text-slate-300">
-              問題回報：icon@sunz.tw
+            <a
+              href="mailto:icon@sunz.tw"
+              className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900/35 px-3 py-1.5 transition-colors hover:border-slate-500 hover:text-slate-300"
+            >
+              <Mail className="h-3.5 w-3.5" aria-hidden="true" />
+              問題回報
             </a>
           </div>
         </div>

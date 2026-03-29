@@ -4,7 +4,6 @@
 
 ## 線上連結
 - Website: https://public-icon.tw/
-- GitHub: https://github.com/su-nz/public-icon.tw
 
 ## 專案截圖
 

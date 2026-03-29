@@ -2,13 +2,56 @@
 
 import Image from 'next/image'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Download, ExternalLink, X } from 'lucide-react'
+import { ClipboardCopy, Download, ExternalLink, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { toRepoTreeUrl } from '@/lib/site'
 import type { IconRecord } from '@/lib/types'
 
 type DetailDrawerProps = {
   icon: IconRecord | null
   onClose: () => void
+}
+
+async function convertBlobToPng(blob: Blob): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const imageUrl = URL.createObjectURL(blob)
+    const image = new window.Image()
+
+    image.onload = () => {
+      try {
+        const canvas = document.createElement('canvas')
+        canvas.width = image.naturalWidth || image.width
+        canvas.height = image.naturalHeight || image.height
+        const context = canvas.getContext('2d')
+
+        if (!context) {
+          URL.revokeObjectURL(imageUrl)
+          reject(new Error('Canvas context unavailable'))
+          return
+        }
+
+        context.drawImage(image, 0, 0)
+        canvas.toBlob((pngBlob) => {
+          URL.revokeObjectURL(imageUrl)
+          if (!pngBlob) {
+            reject(new Error('PNG conversion failed'))
+            return
+          }
+          resolve(pngBlob)
+        }, 'image/png')
+      } catch (error) {
+        URL.revokeObjectURL(imageUrl)
+        reject(error)
+      }
+    }
+
+    image.onerror = () => {
+      URL.revokeObjectURL(imageUrl)
+      reject(new Error('Image decode failed'))
+    }
+
+    image.src = imageUrl
+  })
 }
 
 function DownloadLink({ href, label }: { href: string | null; label: string }) {
@@ -33,10 +76,56 @@ function DownloadLink({ href, label }: { href: string | null; label: string }) {
 }
 
 export function DetailDrawer({ icon, onClose }: DetailDrawerProps) {
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [copyMessage, setCopyMessage] = useState('')
+
+  useEffect(() => {
+    setCopyStatus('idle')
+    setCopyMessage('')
+  }, [icon?.id])
+
   const aiLink = icon ? icon.filePaths.ai : null
   const epsLink = icon ? icon.filePaths.eps : null
   const jpgLink = icon ? icon.filePaths.jpg : null
   const sourceLink = icon ? toRepoTreeUrl(`data/${icon.sourcePath}`) : '#'
+
+  async function handleCopyJpg() {
+    if (!jpgLink) {
+      setCopyStatus('error')
+      setCopyMessage('此圖標沒有 JPG 可複製')
+      return
+    }
+
+    try {
+      if (!window.isSecureContext || !navigator.clipboard?.write || typeof ClipboardItem === 'undefined') {
+        setCopyStatus('error')
+        setCopyMessage('目前環境不支援直接複製圖片，請使用 HTTPS 並改用 Chrome/Edge')
+        return
+      }
+
+      const response = await fetch(jpgLink)
+      if (!response.ok) {
+        throw new Error(`Fetch failed with ${response.status}`)
+      }
+
+      const blob = await response.blob()
+
+      try {
+        const mime = blob.type || 'image/jpeg'
+        await navigator.clipboard.write([new ClipboardItem({ [mime]: blob })])
+      } catch {
+        const pngBlob = await convertBlobToPng(blob)
+        await navigator.clipboard.write([new ClipboardItem({ [pngBlob.type || 'image/png']: pngBlob })])
+      }
+
+      setCopyStatus('success')
+      setCopyMessage('已複製圖片到剪貼簿')
+    } catch (error) {
+      console.error('Copy JPG failed in detail drawer', error)
+      setCopyStatus('error')
+      setCopyMessage('複製失敗，請改用下載')
+    }
+  }
 
   return (
     <AnimatePresence>
@@ -94,11 +183,25 @@ export function DetailDrawer({ icon, onClose }: DetailDrawerProps) {
               ) : null}
             </div>
 
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <DownloadLink href={jpgLink} label="JPG" />
               <DownloadLink href={aiLink} label="AI" />
               <DownloadLink href={epsLink} label="EPS" />
+              <button
+                type="button"
+                onClick={handleCopyJpg}
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:text-primary"
+              >
+                <ClipboardCopy className="h-4 w-4" aria-hidden="true" />
+                {copyStatus === 'success' ? '已複製 JPG' : '複製 JPG'}
+              </button>
             </div>
+
+            {copyMessage ? (
+              <p className={`mt-3 text-sm ${copyStatus === 'success' ? 'text-emerald-700' : 'text-rose-600'}`}>
+                {copyMessage}
+              </p>
+            ) : null}
 
             <a
               href={sourceLink}
