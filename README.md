@@ -2,27 +2,23 @@
 
 本專案將 CNS16282 相關圖標進行整理與前端化呈現，提供更好用的搜尋、分類瀏覽與格式下載。
 
-## 線上連結
 - Website: https://public-icon.tw/
+
+
 
 ## 專案截圖
 
-> 建議你把圖片放在 `docs/screenshots/`，然後把下方的圖片連結取消註解（或改成你的實際路徑）。
 
 ### 首頁
 
-<!-- TODO: 插入首頁截圖 -->
-<!-- ![首頁預覽](docs/screenshots/home.png) -->
+![首頁預覽](docs/screenshots/home.png)
 
 ### 詳情抽屜（下載 / 原始資料夾連結）
-
-<!-- TODO: 插入詳情抽屜截圖 -->
-<!-- ![詳情抽屜](docs/screenshots/detail-drawer.png) -->
+![詳情抽屜](docs/screenshots/detail-drawer.png)
 
 ### 純圖標速覽（/quick）
 
-<!-- TODO: 插入 /quick 頁面截圖 -->
-<!-- ![純圖標速覽](docs/screenshots/quick.png) -->
+![純圖標速覽](docs/screenshots/quick.png)
 
 ## 快速開始
 
@@ -38,7 +34,7 @@ npm install
 npm run dev
 ```
 
-### 建置與預覽（靜態輸出）
+### 建置與預覽
 
 > `npm run build` 會先執行 prebuild：掃描 `data/` 並產生清冊與靜態資產。
 
