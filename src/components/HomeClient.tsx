@@ -18,6 +18,19 @@ type CopyToast = {
   text: string
 }
 
+async function tryCopyImageUrlToClipboard(url: string): Promise<boolean> {
+  try {
+    if (!navigator.clipboard?.writeText) {
+      return false
+    }
+
+    await navigator.clipboard.writeText(url)
+    return true
+  } catch {
+    return false
+  }
+}
+
 async function convertBlobToPng(blob: Blob): Promise<Blob> {
   return new Promise((resolve, reject) => {
     const imageUrl = URL.createObjectURL(blob)
@@ -98,9 +111,17 @@ export function HomeClient({ inventory }: HomeClientProps) {
       return
     }
 
+    const absoluteJpgUrl = new URL(icon.filePaths.jpg, window.location.origin).href
+
     try {
       if (!window.isSecureContext || !navigator.clipboard?.write || typeof ClipboardItem === 'undefined') {
-        showCopyToast('error', '目前環境不支援直接複製圖片，請使用 HTTPS 並改用 Chrome/Edge')
+        const copiedUrl = await tryCopyImageUrlToClipboard(absoluteJpgUrl)
+        if (copiedUrl) {
+          showCopyToast('success', '此瀏覽器不支援圖片複製，已改為複製圖片網址')
+          return
+        }
+
+        showCopyToast('error', '手機瀏覽器通常不支援直接複製圖片，請改用 Details 下載')
         return
       }
 
@@ -115,8 +136,18 @@ export function HomeClient({ inventory }: HomeClientProps) {
         const mime = blob.type || 'image/jpeg'
         await navigator.clipboard.write([new ClipboardItem({ [mime]: blob })])
       } catch {
-        const pngBlob = await convertBlobToPng(blob)
-        await navigator.clipboard.write([new ClipboardItem({ [pngBlob.type || 'image/png']: pngBlob })])
+        try {
+          const pngBlob = await convertBlobToPng(blob)
+          await navigator.clipboard.write([new ClipboardItem({ [pngBlob.type || 'image/png']: pngBlob })])
+        } catch {
+          const copiedUrl = await tryCopyImageUrlToClipboard(absoluteJpgUrl)
+          if (!copiedUrl) {
+            throw new Error('Image and URL copy both failed')
+          }
+
+          showCopyToast('success', '已複製圖片網址（此裝置不支援直接複製圖片）')
+          return
+        }
       }
 
       showCopyToast('success', '已複製圖片到剪貼簿')
