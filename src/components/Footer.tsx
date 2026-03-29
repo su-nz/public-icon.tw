@@ -32,6 +32,7 @@ export function Footer() {
             <Link href="/quick" className="transition-colors hover:text-white">純圖標速覽</Link>
             <Link href="/license" className="transition-colors hover:text-white">授權條款</Link>
             <Link href="/manual" className="transition-colors hover:text-white">說明書</Link>
+            <Link href="/author" className="transition-colors hover:text-white">網站作者</Link>
           </div>
         </div>
 
@@ -45,8 +46,18 @@ export function Footer() {
         </div>
 
       </div>
-      <div className="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
-        © {new Date().getFullYear()} public-icon.tw
+      <div className="border-t border-slate-800/80 px-4 py-4 text-xs text-slate-500 sm:px-6">
+        <div className="mx-auto flex w-full max-w-8xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} public-icon.tw</p>
+          <div className="flex flex-col gap-1 sm:items-end">
+            <a href="https://github.com/su-nz" target="_blank" rel="noreferrer" className="transition-colors hover:text-slate-300">
+              作者：github.com/su-nz
+            </a>
+            <a href="mailto:icon@sunz.tw" className="transition-colors hover:text-slate-300">
+              問題回報：icon@sunz.tw
+            </a>
+          </div>
+        </div>
       </div>
     </footer>
   )

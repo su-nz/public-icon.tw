@@ -42,6 +42,14 @@ export default function LicensePage() {
 
           <div className="mt-4 flex flex-wrap gap-3 text-sm">
             <a
+              href="https://www.tdri.org.tw/zh-TW"
+              target="_blank"
+              rel="noreferrer"
+              className="font-semibold text-blue-600 hover:text-blue-700"
+            >
+              TDRI 官網（zh-TW）
+            </a>
+            <a
               href="https://www.tdri.org.tw/zh-TW/design-resource/CNS16282"
               target="_blank"
               rel="noreferrer"
