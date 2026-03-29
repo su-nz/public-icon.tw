@@ -78,6 +78,17 @@ function DownloadLink({ href, label }: { href: string | null; label: string }) {
 export function DetailDrawer({ icon, onClose }: DetailDrawerProps) {
   const [copyStatus, setCopyStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [copyMessage, setCopyMessage] = useState('')
+  const [isMobileJpgAction, setIsMobileJpgAction] = useState(false)
+
+  useEffect(() => {
+    const userAgent = navigator.userAgent || ''
+    const platform = navigator.platform || ''
+    const maxTouchPoints = navigator.maxTouchPoints || 0
+    const isMobile = /Android|iPad|iPhone|iPod|Mobile|Windows Phone|IEMobile/i.test(userAgent)
+      || (platform === 'MacIntel' && maxTouchPoints > 1)
+
+    setIsMobileJpgAction(isMobile)
+  }, [])
 
   useEffect(() => {
     setCopyStatus('idle')
@@ -187,14 +198,16 @@ export function DetailDrawer({ icon, onClose }: DetailDrawerProps) {
               <DownloadLink href={jpgLink} label="JPG" />
               <DownloadLink href={aiLink} label="AI" />
               <DownloadLink href={epsLink} label="EPS" />
-              <button
-                type="button"
-                onClick={handleCopyJpg}
-                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:text-primary"
-              >
-                <ClipboardCopy className="h-4 w-4" aria-hidden="true" />
-                {copyStatus === 'success' ? '已複製 JPG' : '複製 JPG'}
-              </button>
+              {!isMobileJpgAction ? (
+                <button
+                  type="button"
+                  onClick={handleCopyJpg}
+                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:text-primary"
+                >
+                  <ClipboardCopy className="h-4 w-4" aria-hidden="true" />
+                  {copyStatus === 'success' ? '已複製 JPG' : '複製 JPG'}
+                </button>
+              ) : null}
             </div>
 
             {copyMessage ? (
