@@ -1,4 +1,4 @@
-const DEFAULT_REPO = 'suenl/public-icon.tw'
+const DEFAULT_REPO = 'su-nz/public-icon.tw'
 
 export const SITE_NAME = 'public-icon.tw'
 export const SITE_DESCRIPTION = '台灣公共圖標導航站，支援搜尋、下載與授權資訊查詢。'

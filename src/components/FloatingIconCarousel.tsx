@@ -24,13 +24,13 @@ export function FloatingIconCarousel({ icons, onSelectIcon }: FloatingIconCarous
   const frameIcons = Array.from({ length: 4 }, (_, offset) => iconPool[(startIndex + offset) % iconPool.length])
 
   return (
-    <div className="relative mt-8 overflow-hidden rounded-3xl border border-blue-100 bg-white/80 p-4 shadow-soft backdrop-blur">
+    <div className="relative overflow-hidden rounded-3xl border border-blue-100 bg-white/85 p-3 shadow-soft backdrop-blur sm:p-4">
       <div className="pointer-events-none absolute -left-24 -top-16 h-40 w-40 rounded-full bg-blue-300/30 blur-3xl" />
       <div className="pointer-events-none absolute -right-20 -bottom-16 h-36 w-36 rounded-full bg-cyan-300/30 blur-3xl" />
 
       <motion.div
         key={startIndex}
-        className="relative grid h-[170px] w-[133.333%] grid-cols-4 gap-4"
+        className="relative flex h-[160px] w-[133.333%] sm:h-[185px] lg:h-[210px]"
         initial={{ x: '0%' }}
         animate={{ x: '-25%' }}
         transition={{ duration: STEP_DURATION, ease: 'linear' }}
@@ -54,14 +54,18 @@ export function FloatingIconCarousel({ icons, onSelectIcon }: FloatingIconCarous
                 src={icon.thumbnail || ''}
                 alt={icon.name}
                 fill
-                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
-                className="object-contain p-5"
+                sizes="(max-width: 768px) 33vw, (max-width: 1200px) 20vw, 14vw"
+                className="object-contain p-4 sm:p-5"
               />
             </motion.div>
           )
 
           if (!onSelectIcon) {
-            return <div key={`${icon.id}-${index}`}>{card}</div>
+            return (
+              <div key={`${icon.id}-${index}`} className="w-1/4 px-1.5 sm:px-2">
+                {card}
+              </div>
+            )
           }
 
           return (
@@ -70,7 +74,7 @@ export function FloatingIconCarousel({ icons, onSelectIcon }: FloatingIconCarous
               type="button"
               aria-label={icon.name}
               onClick={() => onSelectIcon(icon)}
-              className="text-left"
+              className="w-1/4 px-1.5 text-left sm:px-2"
             >
               {card}
             </button>

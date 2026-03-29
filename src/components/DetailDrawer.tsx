@@ -14,7 +14,7 @@ type DetailDrawerProps = {
 function DownloadLink({ href, label }: { href: string | null; label: string }) {
   if (!href) {
     return (
-      <span className="inline-flex items-center justify-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-400">
+      <span className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-400">
         {label} 不可用
       </span>
     )
@@ -24,7 +24,7 @@ function DownloadLink({ href, label }: { href: string | null; label: string }) {
     <a
       href={href}
       download
-      className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-semibold text-white shadow-button transition hover:-translate-y-0.5"
+      className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-semibold text-white shadow-button transition hover:-translate-y-0.5"
     >
       <Download className="h-4 w-4" aria-hidden="true" />
       下載 {label}
@@ -90,13 +90,10 @@ export function DetailDrawer({ icon, onClose }: DetailDrawerProps) {
               ) : null}
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <DownloadLink href={jpgLink} label="JPG" />
               <DownloadLink href={aiLink} label="AI" />
               <DownloadLink href={epsLink} label="EPS" />
-            </div>
-
-            <div className="mt-3">
-              <DownloadLink href={jpgLink} label="JPG" />
             </div>
 
             <a

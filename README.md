@@ -46,9 +46,9 @@
 可在本機 .env.local 或 Cloudflare / GitHub Secrets 設定。
 
 - NEXT_PUBLIC_GITHUB_REPO
-  - 預設：suenl/public-icon.tw
+   - 預設：su-nz/public-icon.tw
    - 用途：組合「檢視 GitHub 原始資料夾」外部連結
-  - 範例：NEXT_PUBLIC_GITHUB_REPO=your-account/public-icon.tw
+   - 範例：NEXT_PUBLIC_GITHUB_REPO=su-nz/public-icon.tw
 
 - NEXT_PUBLIC_MANUAL_PUBLIC_ALLOWED
   - 預設：false
