@@ -33,7 +33,7 @@ export function IconCard({ icon, isCopied, onCopyJpg, onOpenDetail }: IconCardPr
       <p className="line-clamp-1 text-sm font-bold text-slate-900">{icon.name}</p>
       <p className="mt-1 text-xs text-slate-500">{icon.code || icon.id}</p>
 
-      <div className="mt-4 grid grid-cols-1 gap-2 opacity-100 transition-opacity duration-200 sm:grid-cols-2 md:opacity-0 md:group-hover:opacity-100">
+      <div className="mt-4 grid grid-cols-1 gap-2 opacity-100 transition-opacity duration-200 sm:grid-cols-2 md:grid-cols-1 md:opacity-0 md:group-hover:opacity-100 lg:grid-cols-2">
         {icon.filePaths.jpg ? (
           <button
             type="button"
