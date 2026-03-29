@@ -212,9 +212,6 @@ export function HomeClient({ inventory }: HomeClientProps) {
         <header className="relative overflow-hidden rounded-3xl border border-blue-100 bg-white/90 px-4 py-6 shadow-soft backdrop-blur sm:px-8 sm:py-8 lg:px-10 lg:py-10">
           <div className="grid items-center gap-8 lg:grid-cols-2">
             <div className="min-w-0">
-              <p className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-wide text-blue-700">
-                CNS16282 Public Icons
-              </p>
               <h1 className="mt-4 break-words text-[clamp(1.9rem,8.4vw,3rem)] font-extrabold leading-tight tracking-tight text-slate-900">
                 台灣公共圖標素材庫
               </h1>
@@ -229,7 +226,7 @@ export function HomeClient({ inventory }: HomeClientProps) {
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-slate-700 transition hover:border-blue-300 hover:text-blue-700"
                 >
-                  官方資源
+                  台灣設計研究院計畫
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </a>
                 <a
