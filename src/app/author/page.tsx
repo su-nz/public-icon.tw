@@ -4,9 +4,7 @@ export default function AuthorPage() {
   return (
     <section className="mx-auto w-full max-w-4xl px-4 py-12 sm:px-6">
       <header className="max-w-2xl">
-        <p className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-wide text-blue-700">
-          Author
-        </p>
+
         <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">網站作者</h1>
         <p className="mt-3 text-slate-600">本網站由 su-nz 維護，若有問題或合作需求，歡迎透過下方方式聯絡。</p>
       </header>

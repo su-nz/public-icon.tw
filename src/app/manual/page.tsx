@@ -4,9 +4,6 @@ export default function ManualPage() {
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6">
       <header className="max-w-3xl">
-        <p className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold uppercase tracking-wide text-amber-700">
-          Manual
-        </p>
         <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">圖標說明書</h1>
       </header>
 

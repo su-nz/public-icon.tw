@@ -4,9 +4,7 @@ export default function LicensePage() {
   return (
     <section className="mx-auto w-full max-w-4xl px-4 py-12 sm:px-6">
       <header>
-        <p className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-wide text-blue-700">
-          License
-        </p>
+
         <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">授權與來源聲明</h1>
         <p className="mt-3 text-slate-600">
           public-icon.tw 彙整公開圖標資料，主要參考台灣設計研究院公共圖標計畫與 CNS16282
