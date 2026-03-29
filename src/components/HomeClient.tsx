@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ArrowRight, Search } from 'lucide-react'
 import { CategorySidebar } from '@/components/CategorySidebar'
 import { CategoryTabs } from '@/components/CategoryTabs'
@@ -18,13 +18,28 @@ type CopyToast = {
   text: string
 }
 
-function isIosDevice(): boolean {
+function isMobileDevice(): boolean {
   const userAgent = navigator.userAgent || ''
   const platform = navigator.platform || ''
   const maxTouchPoints = navigator.maxTouchPoints || 0
 
-  return /iPad|iPhone|iPod/i.test(userAgent)
+  return /Android|iPad|iPhone|iPod|Mobile|Windows Phone|IEMobile/i.test(userAgent)
     || (platform === 'MacIntel' && maxTouchPoints > 1)
+}
+
+function triggerBrowserDownload(url: string, fileName: string): boolean {
+  try {
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = fileName
+    anchor.rel = 'noopener noreferrer'
+    document.body.appendChild(anchor)
+    anchor.click()
+    document.body.removeChild(anchor)
+    return true
+  } catch {
+    return false
+  }
 }
 
 async function tryCopyImageUrlToClipboard(url: string): Promise<boolean> {
@@ -88,6 +103,11 @@ export function HomeClient({ inventory }: HomeClientProps) {
   const [activeIcon, setActiveIcon] = useState<IconRecord | null>(null)
   const [copiedIconId, setCopiedIconId] = useState<string | null>(null)
   const [copyToast, setCopyToast] = useState<CopyToast | null>(null)
+  const [isMobileJpgAction, setIsMobileJpgAction] = useState(false)
+
+  useEffect(() => {
+    setIsMobileJpgAction(isMobileDevice())
+  }, [])
 
   const filteredIcons = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase()
@@ -123,14 +143,15 @@ export function HomeClient({ inventory }: HomeClientProps) {
     const absoluteJpgUrl = new URL(icon.filePaths.jpg, window.location.origin).href
 
     try {
-      if (isIosDevice()) {
-        const copiedUrl = await tryCopyImageUrlToClipboard(absoluteJpgUrl)
-        if (copiedUrl) {
-          showCopyToast('success', 'iPhone 已複製圖片網址，請貼到文字欄位或直接下載圖片')
+      if (isMobileDevice()) {
+        const fileName = `${icon.id}.jpg`
+        const started = triggerBrowserDownload(absoluteJpgUrl, fileName)
+        if (started) {
+          showCopyToast('success', '已開始下載 JPG')
           return
         }
 
-        showCopyToast('error', 'iPhone 通常無法直接複製圖片，請改用 Details 下載')
+        showCopyToast('error', '啟動下載失敗，請改用 Details 下載')
         return
       }
 
@@ -267,6 +288,7 @@ export function HomeClient({ inventory }: HomeClientProps) {
             <IconGrid
               icons={filteredIcons}
               copiedIconId={copiedIconId}
+              isMobileJpgAction={isMobileJpgAction}
               onCopyJpg={handleCopyJpg}
               onOpenDetail={setActiveIcon}
             />

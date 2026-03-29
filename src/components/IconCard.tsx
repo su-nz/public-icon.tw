@@ -7,11 +7,12 @@ import type { IconRecord } from '@/lib/types'
 type IconCardProps = {
   icon: IconRecord
   isCopied: boolean
+  isMobileJpgAction: boolean
   onCopyJpg: (icon: IconRecord) => void
   onOpenDetail: (icon: IconRecord) => void
 }
 
-export function IconCard({ icon, isCopied, onCopyJpg, onOpenDetail }: IconCardProps) {
+export function IconCard({ icon, isCopied, isMobileJpgAction, onCopyJpg, onOpenDetail }: IconCardProps) {
   return (
     <article className="group relative min-w-0 overflow-hidden rounded-2xl border border-slate-100 bg-white p-3 shadow-soft transition-all duration-200 hover:-translate-y-1 hover:shadow-hover sm:p-4">
       <div className="relative mb-4 flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-slate-50 to-blue-50">
@@ -40,8 +41,12 @@ export function IconCard({ icon, isCopied, onCopyJpg, onOpenDetail }: IconCardPr
             onClick={() => onCopyJpg(icon)}
             className="inline-flex min-w-0 items-center justify-center gap-1 rounded-lg border border-slate-200 bg-white px-2 py-2 text-xs font-semibold text-slate-700 transition hover:border-blue-300 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
-            <ClipboardCopy className="h-3.5 w-3.5" aria-hidden="true" />
-            {isCopied ? '已複製' : '複製 JPG'}
+            {isMobileJpgAction ? (
+              <Download className="h-3.5 w-3.5" aria-hidden="true" />
+            ) : (
+              <ClipboardCopy className="h-3.5 w-3.5" aria-hidden="true" />
+            )}
+            {isMobileJpgAction ? '下載 JPG' : isCopied ? '已複製' : '複製 JPG'}
           </button>
         ) : (
           <span className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-2 py-2 text-xs font-semibold text-slate-400">

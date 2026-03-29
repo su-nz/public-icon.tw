@@ -6,11 +6,12 @@ import type { IconRecord } from '@/lib/types'
 type IconGridProps = {
   icons: IconRecord[]
   copiedIconId: string | null
+  isMobileJpgAction: boolean
   onCopyJpg: (icon: IconRecord) => void
   onOpenDetail: (icon: IconRecord) => void
 }
 
-export function IconGrid({ icons, copiedIconId, onCopyJpg, onOpenDetail }: IconGridProps) {
+export function IconGrid({ icons, copiedIconId, isMobileJpgAction, onCopyJpg, onOpenDetail }: IconGridProps) {
   if (icons.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-slate-300 bg-white/70 p-10 text-center shadow-soft">
@@ -28,6 +29,7 @@ export function IconGrid({ icons, copiedIconId, onCopyJpg, onOpenDetail }: IconG
             key={icon.id}
             icon={icon}
             isCopied={copiedIconId === icon.id}
+            isMobileJpgAction={isMobileJpgAction}
             onCopyJpg={onCopyJpg}
             onOpenDetail={onOpenDetail}
           />
