@@ -53,3 +53,22 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+.icon-grid-auto {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+}
+
+@media (min-width: 640px) {
+  .icon-grid-auto {
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .icon-grid-auto {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
