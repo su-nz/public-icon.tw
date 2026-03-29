@@ -18,6 +18,15 @@ type CopyToast = {
   text: string
 }
 
+function isIosDevice(): boolean {
+  const userAgent = navigator.userAgent || ''
+  const platform = navigator.platform || ''
+  const maxTouchPoints = navigator.maxTouchPoints || 0
+
+  return /iPad|iPhone|iPod/i.test(userAgent)
+    || (platform === 'MacIntel' && maxTouchPoints > 1)
+}
+
 async function tryCopyImageUrlToClipboard(url: string): Promise<boolean> {
   try {
     if (!navigator.clipboard?.writeText) {
@@ -114,6 +123,17 @@ export function HomeClient({ inventory }: HomeClientProps) {
     const absoluteJpgUrl = new URL(icon.filePaths.jpg, window.location.origin).href
 
     try {
+      if (isIosDevice()) {
+        const copiedUrl = await tryCopyImageUrlToClipboard(absoluteJpgUrl)
+        if (copiedUrl) {
+          showCopyToast('success', 'iPhone 已複製圖片網址，請貼到文字欄位或直接下載圖片')
+          return
+        }
+
+        showCopyToast('error', 'iPhone 通常無法直接複製圖片，請改用 Details 下載')
+        return
+      }
+
       if (!window.isSecureContext || !navigator.clipboard?.write || typeof ClipboardItem === 'undefined') {
         const copiedUrl = await tryCopyImageUrlToClipboard(absoluteJpgUrl)
         if (copiedUrl) {
