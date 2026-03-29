@@ -8,9 +8,6 @@ export default function ManualPage() {
           Manual
         </p>
         <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">圖標說明書</h1>
-        <p className="mt-3 text-slate-600">
-          本頁不投放廣告，並預設提供公開 PDF 預覽與下載參考。
-        </p>
       </header>
 
       <div className="mt-6 rounded-2xl border border-rose-200 bg-rose-50 p-5 text-rose-900">
@@ -27,10 +24,6 @@ export default function ManualPage() {
           className="h-[75vh] w-full"
           aria-label="說明書 PDF 預覽"
         >
-          <div className="p-6">
-            <p className="text-slate-700">目前尚未找到說明書 PDF。</p>
-            <p className="mt-2 text-sm text-slate-500">請將檔案放到 public/manual/CNS16282-manual.pdf 後重新整理。</p>
-          </div>
         </object>
       </div>
 

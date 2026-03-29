@@ -1,21 +1,12 @@
 # 台灣公共圖標導覽與下載平台 public-icon.tw 
 
-本專案將 CNS16282 相關圖標進行整理與前端化呈現，提供更好用的搜尋、分類瀏覽與格式下載；同時保留「授權資訊」與「說明書」的合規發布策略。
-
-## 亮點功能
-
-- 圖標庫瀏覽 + 即時搜尋
-- 分類導覽（桌面/平板/手機 RWD）
-- JPG 預覽（並支援複製到剪貼簿）
-- AI / EPS 靜態下載
-- 純圖標速覽頁（/quick）：不顯示文字、最大化密度
-- 靜態輸出部署（Cloudflare Pages，輸出目錄 out）
+本專案將 CNS16282 相關圖標進行整理與前端化呈現，提供更好用的搜尋、分類瀏覽與格式下載。
 
 ## 線上連結
 - Website: https://public-icon.tw/
 - GitHub: https://github.com/su-nz/public-icon.tw
 
-## 專案截圖（請自行替換圖片）
+## 專案截圖
 
 > 建議你把圖片放在 `docs/screenshots/`，然後把下方的圖片連結取消註解（或改成你的實際路徑）。
 
@@ -34,11 +25,11 @@
 <!-- TODO: 插入 /quick 頁面截圖 -->
 <!-- ![純圖標速覽](docs/screenshots/quick.png) -->
 
-## 快速開始（本機）
+## 快速開始
 
 ### 需求
 
-- Node.js 18+（建議 20+）
+- Node.js 18+
 - npm
 
 ### 安裝與啟動
@@ -55,20 +46,6 @@ npm run dev
 ```bash
 npm run build
 npm run start
-```
-
-## 環境變數
-
-目前專案預設為「公開模式」，不需要設定環境變數也可直接運作。
-
-| 變數 | 預設 | 用途 |
-| --- | --- | --- |
-| （無） | - | 目前已改為固定公開設定（GitHub 連結與手冊公開不再依賴環境變數） |
-
-如果之後你想改回可配置模式，再加回對應環境變數邏輯即可。
-
-```bash
-# No environment variables required by default.
 ```
 
 ## 部署（Cloudflare Pages）

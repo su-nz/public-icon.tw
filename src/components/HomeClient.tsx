@@ -18,6 +18,48 @@ type CopyToast = {
   text: string
 }
 
+async function convertBlobToPng(blob: Blob): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const imageUrl = URL.createObjectURL(blob)
+    const image = new Image()
+
+    image.onload = () => {
+      try {
+        const canvas = document.createElement('canvas')
+        canvas.width = image.naturalWidth || image.width
+        canvas.height = image.naturalHeight || image.height
+        const context = canvas.getContext('2d')
+
+        if (!context) {
+          URL.revokeObjectURL(imageUrl)
+          reject(new Error('Canvas context unavailable'))
+          return
+        }
+
+        context.drawImage(image, 0, 0)
+        canvas.toBlob((pngBlob) => {
+          URL.revokeObjectURL(imageUrl)
+          if (!pngBlob) {
+            reject(new Error('PNG conversion failed'))
+            return
+          }
+          resolve(pngBlob)
+        }, 'image/png')
+      } catch (error) {
+        URL.revokeObjectURL(imageUrl)
+        reject(error)
+      }
+    }
+
+    image.onerror = () => {
+      URL.revokeObjectURL(imageUrl)
+      reject(new Error('Image decode failed'))
+    }
+
+    image.src = imageUrl
+  })
+}
+
 export function HomeClient({ inventory }: HomeClientProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState('all')
@@ -57,35 +99,27 @@ export function HomeClient({ inventory }: HomeClientProps) {
     }
 
     try {
-      const imageUrl = new URL(icon.filePaths.jpg, window.location.origin).toString()
-
-      if (!window.isSecureContext) {
-        await navigator.clipboard.writeText(imageUrl)
-        showCopyToast('success', '目前環境限制，已複製圖片網址')
-      } else {
-        const response = await fetch(icon.filePaths.jpg)
-        const blob = await response.blob()
-
-        if (typeof ClipboardItem !== 'undefined' && navigator.clipboard?.write) {
-          try {
-            const mime = blob.type || 'image/jpeg'
-            await navigator.clipboard.write([new ClipboardItem({ [mime]: blob })])
-            showCopyToast('success', '已成功複製 JPG')
-          } catch {
-            if (navigator.clipboard?.writeText) {
-              await navigator.clipboard.writeText(imageUrl)
-              showCopyToast('success', '瀏覽器限制，已改為複製圖片網址')
-            } else {
-              throw new Error('Clipboard write is not supported')
-            }
-          }
-        } else if (navigator.clipboard?.writeText) {
-          await navigator.clipboard.writeText(imageUrl)
-          showCopyToast('success', '瀏覽器不支援圖片剪貼簿，已複製圖片網址')
-        } else {
-          throw new Error('Clipboard API not available')
-        }
+      if (!window.isSecureContext || !navigator.clipboard?.write || typeof ClipboardItem === 'undefined') {
+        showCopyToast('error', '目前環境不支援直接複製圖片，請使用 HTTPS 並改用 Chrome/Edge')
+        return
       }
+
+      const response = await fetch(icon.filePaths.jpg)
+      if (!response.ok) {
+        throw new Error(`Fetch failed with ${response.status}`)
+      }
+
+      const blob = await response.blob()
+
+      try {
+        const mime = blob.type || 'image/jpeg'
+        await navigator.clipboard.write([new ClipboardItem({ [mime]: blob })])
+      } catch {
+        const pngBlob = await convertBlobToPng(blob)
+        await navigator.clipboard.write([new ClipboardItem({ [pngBlob.type || 'image/png']: pngBlob })])
+      }
+
+      showCopyToast('success', '已複製圖片到剪貼簿')
 
       setCopiedIconId(icon.id)
       window.setTimeout(() => {

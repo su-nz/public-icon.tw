@@ -54,13 +54,17 @@ export function FloatingIconCarousel({ icons, onSelectIcon }: FloatingIconCarous
               }}
               className="relative h-full overflow-hidden rounded-2xl border border-blue-100 bg-gradient-to-br from-white to-blue-50 shadow-soft"
             >
-              <Image
-                src={icon.thumbnail || ''}
-                alt={icon.name}
-                fill
-                sizes="(max-width: 768px) 33vw, (max-width: 1200px) 20vw, 14vw"
-                className="object-contain p-4 sm:p-5"
-              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative h-[74%] w-[74%] sm:h-[76%] sm:w-[76%]">
+                  <Image
+                    src={icon.thumbnail || ''}
+                    alt={icon.name}
+                    fill
+                    sizes="(max-width: 768px) 33vw, (max-width: 1200px) 20vw, 14vw"
+                    className="object-contain"
+                  />
+                </div>
+              </div>
             </motion.div>
           )
 

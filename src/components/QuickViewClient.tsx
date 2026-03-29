@@ -39,13 +39,17 @@ export function QuickViewClient({ icons }: QuickViewClientProps) {
             className="group relative aspect-square overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition hover:z-10 hover:scale-105 hover:shadow-lg"
           >
             {icon.thumbnail ? (
-              <Image
-                src={icon.thumbnail}
-                alt={icon.name}
-                fill
-                sizes="(max-width: 640px) 25vw, (max-width: 1024px) 16vw, 8vw"
-                className="object-contain p-1"
-              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative h-[80%] w-[80%]">
+                  <Image
+                    src={icon.thumbnail}
+                    alt={icon.name}
+                    fill
+                    sizes="(max-width: 640px) 25vw, (max-width: 1024px) 16vw, 8vw"
+                    className="object-contain"
+                  />
+                </div>
+              </div>
             ) : null}
           </button>
         ))}

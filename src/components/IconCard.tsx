@@ -16,13 +16,15 @@ export function IconCard({ icon, isCopied, onCopyJpg, onOpenDetail }: IconCardPr
     <article className="group relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-4 shadow-soft transition-all duration-200 hover:-translate-y-1 hover:shadow-hover">
       <div className="relative mb-4 flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-slate-50 to-blue-50">
         {icon.thumbnail ? (
-          <Image
-            src={icon.thumbnail}
-            alt={`${icon.name} 圖標縮圖`}
-            fill
-            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
-            className="object-contain p-6 transition-transform duration-500 group-hover:scale-105"
-          />
+          <div className="relative h-[76%] w-[76%]">
+            <Image
+              src={icon.thumbnail}
+              alt={`${icon.name} 圖標縮圖`}
+              fill
+              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
+              className="object-contain transition-transform duration-500 md:group-hover:scale-105"
+            />
+          </div>
         ) : (
           <span className="text-xs font-semibold text-slate-400">無縮圖</span>
         )}

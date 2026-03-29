@@ -80,13 +80,17 @@ export function DetailDrawer({ icon, onClose }: DetailDrawerProps) {
 
             <div className="relative mb-5 aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-slate-50 to-blue-50">
               {icon.thumbnail ? (
-                <Image
-                  src={icon.thumbnail}
-                  alt={`${icon.name} 大圖`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 400px"
-                  className="object-contain p-8"
-                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="relative h-[76%] w-[76%]">
+                    <Image
+                      src={icon.thumbnail}
+                      alt={`${icon.name} 大圖`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 400px"
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
               ) : null}
             </div>
 
@@ -111,9 +115,6 @@ export function DetailDrawer({ icon, onClose }: DetailDrawerProps) {
               <p className="mt-1 text-sm text-emerald-800">使用時請標註來源與授權資訊，可用於商業與非商業用途。</p>
             </div>
 
-            <p className="mt-4 text-xs text-slate-500">
-              下載連結由本站 prebuild 輸出，支援本地開發與正式站點直接下載。
-            </p>
           </motion.aside>
         </>
       ) : null}

@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="zh-Hant">
       <body className={`${plusJakartaSans.variable} font-sans`}>
-        <div className="relative min-h-screen overflow-x-clip">
+        <div className="relative min-h-screen overflow-x-hidden">
           <AppChrome>{children}</AppChrome>
         </div>
       </body>

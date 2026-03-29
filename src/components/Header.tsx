@@ -22,10 +22,10 @@ export function Header() {
           <Link href="/quick" className="shrink-0 rounded-full px-2.5 py-1.5 transition-colors hover:bg-blue-50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:px-3 sm:py-2">
             速覽
           </Link>
-          <Link href="/license" className="hidden rounded-full px-3 py-2 transition-colors hover:bg-blue-50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:inline-flex">
+          <Link href="/license" className="shrink-0 rounded-full px-2.5 py-1.5 transition-colors hover:bg-blue-50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:px-3 sm:py-2">
             授權
           </Link>
-          <Link href="/manual" className="hidden rounded-full px-3 py-2 transition-colors hover:bg-blue-50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:inline-flex">
+          <Link href="/manual" className="shrink-0 rounded-full px-2.5 py-1.5 transition-colors hover:bg-blue-50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:px-3 sm:py-2">
             說明書
           </Link>
           <a
