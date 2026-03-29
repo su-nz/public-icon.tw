@@ -37,7 +37,7 @@ export function FloatingIconCarousel({ icons, onSelectIcon }: FloatingIconCarous
       <div className="pointer-events-none absolute -right-20 -bottom-16 h-36 w-36 rounded-full bg-cyan-300/30 blur-3xl" />
 
       <div
-        className="animate-marquee-track relative flex h-[160px] w-max sm:h-[185px] lg:h-[210px]"
+        className="animate-marquee-track relative flex h-[148px] w-max gap-2 sm:h-[185px] sm:gap-3 lg:h-[210px]"
         style={{ '--marquee-duration': `${MARQUEE_DURATION}s` } as CSSProperties}
       >
         {renderIcons.map((icon, index) => {
@@ -66,7 +66,7 @@ export function FloatingIconCarousel({ icons, onSelectIcon }: FloatingIconCarous
 
           if (!onSelectIcon) {
             return (
-              <div key={`${icon.id}-${index}`} className="w-[132px] shrink-0 px-1.5 sm:w-[170px] sm:px-2 lg:w-[190px]">
+              <div key={`${icon.id}-${index}`} className="w-[clamp(78px,25vw,118px)] shrink-0 sm:w-[170px] lg:w-[190px]">
                 {card}
               </div>
             )
@@ -78,7 +78,7 @@ export function FloatingIconCarousel({ icons, onSelectIcon }: FloatingIconCarous
               type="button"
               aria-label={icon.name}
               onClick={() => onSelectIcon(icon)}
-              className="w-[132px] shrink-0 px-1.5 text-left sm:w-[170px] sm:px-2 lg:w-[190px]"
+              className="w-[clamp(78px,25vw,118px)] shrink-0 text-left sm:w-[170px] lg:w-[190px]"
             >
               {card}
             </button>

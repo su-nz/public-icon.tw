@@ -103,19 +103,19 @@ export function HomeClient({ inventory }: HomeClientProps) {
       <div className="pointer-events-none absolute right-[-100px] top-[20px] -z-10 h-[320px] w-[320px] rounded-full bg-cyan-300/30 blur-3xl" />
 
       <div className="mx-auto w-full max-w-8xl px-4 pt-10 sm:px-6">
-        <header className="relative overflow-hidden rounded-3xl border border-blue-100 bg-white/90 px-6 py-8 shadow-soft backdrop-blur sm:px-8 lg:px-10 lg:py-10">
+        <header className="relative overflow-hidden rounded-3xl border border-blue-100 bg-white/90 px-4 py-6 shadow-soft backdrop-blur sm:px-8 sm:py-8 lg:px-10 lg:py-10">
           <div className="grid items-center gap-8 lg:grid-cols-2">
-            <div>
+            <div className="min-w-0">
               <p className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-wide text-blue-700">
                 CNS16282 Public Icons
               </p>
-              <h1 className="mt-4 text-3xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+              <h1 className="mt-4 break-words text-3xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
                 台灣公共圖標素材庫
                 <span className="block bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   直接搜尋，立即下載
                 </span>
               </h1>
-              <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
+              <p className="mt-4 max-w-2xl break-words text-sm leading-relaxed text-slate-600 sm:text-base">
                 收錄 {inventory.totalCount} 個圖標，支援複製 JPG、AI / EPS / JPG 下載與官方來源索引。
               </p>
 
@@ -141,7 +141,7 @@ export function HomeClient({ inventory }: HomeClientProps) {
               </div>
             </div>
 
-            <div className="lg:pl-2">
+            <div className="min-w-0 lg:pl-2">
               <FloatingIconCarousel icons={inventory.icons} onSelectIcon={setActiveIcon} />
             </div>
           </div>
