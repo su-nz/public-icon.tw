@@ -189,7 +189,7 @@ export function HomeClient({ inventory }: HomeClientProps) {
           />
 
           <div>
-            <div className="sticky top-16 z-30 mb-4 rounded-2xl border border-blue-100 bg-white/90 p-3 shadow-soft backdrop-blur">
+            <div className="sticky top-28 z-30 mb-4 rounded-2xl border border-blue-100 bg-white/90 p-3 shadow-soft backdrop-blur sm:top-16">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <label className="relative block w-full sm:max-w-md">
                   <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" aria-hidden="true" />

@@ -21,7 +21,7 @@ export function IconCard({ icon, isCopied, onCopyJpg, onOpenDetail }: IconCardPr
               src={icon.thumbnail}
               alt={`${icon.name} 圖標縮圖`}
               fill
-              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
+              sizes="(max-width: 359px) 100vw, (max-width: 767px) 50vw, (max-width: 1279px) 33vw, 20vw"
               className="object-contain transition-transform duration-500 md:group-hover:scale-105"
             />
           </div>
