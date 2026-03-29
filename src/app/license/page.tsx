@@ -1,4 +1,13 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: '授權與來源聲明',
+  description: 'public-icon.tw 圖標授權、來源與使用範圍說明。',
+  alternates: {
+    canonical: '/license',
+  },
+}
 
 export default function LicensePage() {
   return (

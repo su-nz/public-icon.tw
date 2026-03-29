@@ -1,4 +1,13 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: '圖標說明書',
+  description: 'CNS16282 公共圖標應用手冊與說明書檢視頁。',
+  alternates: {
+    canonical: '/manual',
+  },
+}
 
 export default function ManualPage() {
   return (

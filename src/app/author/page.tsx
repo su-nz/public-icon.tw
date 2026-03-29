@@ -1,4 +1,13 @@
+import type { Metadata } from 'next'
 import { ExternalLink, Mail } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: '網站作者',
+  description: 'public-icon.tw 作者資訊與聯絡方式。',
+  alternates: {
+    canonical: '/author',
+  },
+}
 
 export default function AuthorPage() {
   return (
