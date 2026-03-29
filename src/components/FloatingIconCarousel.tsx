@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import type { IconRecord } from '@/lib/types'
 
 type FloatingIconCarouselProps = {
@@ -10,18 +10,25 @@ type FloatingIconCarouselProps = {
   onSelectIcon?: (icon: IconRecord) => void
 }
 
-const STEP_DURATION = 3.8
-const FLOAT_DELAYS = [0, 0.65, 1.3, 1.95]
+const MARQUEE_DURATION = 28
+const FLOAT_DELAYS = [0, 0.45, 0.9, 1.35, 1.8, 2.25]
 
 export function FloatingIconCarousel({ icons, onSelectIcon }: FloatingIconCarouselProps) {
   const iconPool = useMemo(() => icons.filter((icon) => Boolean(icon.thumbnail)), [icons])
-  const [startIndex, setStartIndex] = useState(0)
+  const iconSequence = useMemo(() => {
+    const visibleCount = 3
+    if (iconPool.length <= visibleCount) {
+      return iconPool
+    }
 
-  if (iconPool.length < 4) {
+    const preferredCount = Math.min(iconPool.length, 15)
+    return iconPool.slice(0, preferredCount)
+  }, [iconPool])
+  const renderIcons = useMemo(() => [...iconSequence, ...iconSequence], [iconSequence])
+
+  if (iconPool.length < 3) {
     return null
   }
-
-  const frameIcons = Array.from({ length: 4 }, (_, offset) => iconPool[(startIndex + offset) % iconPool.length])
 
   return (
     <div className="relative overflow-hidden rounded-3xl border border-blue-100 bg-white/85 p-3 shadow-soft backdrop-blur sm:p-4">
@@ -29,16 +36,16 @@ export function FloatingIconCarousel({ icons, onSelectIcon }: FloatingIconCarous
       <div className="pointer-events-none absolute -right-20 -bottom-16 h-36 w-36 rounded-full bg-cyan-300/30 blur-3xl" />
 
       <motion.div
-        key={startIndex}
-        className="relative flex h-[160px] w-[133.333%] sm:h-[185px] lg:h-[210px]"
-        initial={{ x: '0%' }}
-        animate={{ x: '-25%' }}
-        transition={{ duration: STEP_DURATION, ease: 'linear' }}
-        onAnimationComplete={() => {
-          setStartIndex((current) => (current + 1) % iconPool.length)
+        className="relative flex h-[160px] sm:h-[185px] lg:h-[210px]"
+        animate={{ x: ['0%', '-50%'] }}
+        transition={{
+          duration: MARQUEE_DURATION,
+          ease: 'linear',
+          repeat: Infinity,
+          repeatType: 'loop',
         }}
       >
-        {frameIcons.map((icon, index) => {
+        {renderIcons.map((icon, index) => {
           const card = (
             <motion.div
               animate={{ y: [0, -8, 0] }}
@@ -62,7 +69,7 @@ export function FloatingIconCarousel({ icons, onSelectIcon }: FloatingIconCarous
 
           if (!onSelectIcon) {
             return (
-              <div key={`${icon.id}-${index}`} className="w-1/4 px-1.5 sm:px-2">
+              <div key={`${icon.id}-${index}`} className="w-1/3 shrink-0 px-1.5 sm:px-2">
                 {card}
               </div>
             )
@@ -74,7 +81,7 @@ export function FloatingIconCarousel({ icons, onSelectIcon }: FloatingIconCarous
               type="button"
               aria-label={icon.name}
               onClick={() => onSelectIcon(icon)}
-              className="w-1/4 px-1.5 text-left sm:px-2"
+              className="w-1/3 shrink-0 px-1.5 text-left sm:px-2"
             >
               {card}
             </button>
