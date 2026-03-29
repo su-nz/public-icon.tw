@@ -59,20 +59,16 @@ npm run start
 
 ## 環境變數
 
-可設定於本機 `.env.local` 或 Cloudflare / GitHub Secrets。
+目前專案預設為「公開模式」，不需要設定環境變數也可直接運作。
 
 | 變數 | 預設 | 用途 |
 | --- | --- | --- |
-| `NEXT_PUBLIC_GITHUB_REPO` | `su-nz/public-icon.tw` | 組合「檢視 GitHub 原始資料夾」連結 |
-| `NEXT_PUBLIC_MANUAL_PUBLIC_ALLOWED` | `false` | 是否允許在本站公開嵌入手冊 PDF（取得授權後才開啟） |
-| `NEXT_PUBLIC_MANUAL_OFFICIAL_URL` | 空字串 | 未公開鏡像時，提供官方來源連結 |
+| （無） | - | 目前已改為固定公開設定（GitHub 連結與手冊公開不再依賴環境變數） |
 
-範例：
+如果之後你想改回可配置模式，再加回對應環境變數邏輯即可。
 
 ```bash
-NEXT_PUBLIC_GITHUB_REPO=su-nz/public-icon.tw
-NEXT_PUBLIC_MANUAL_PUBLIC_ALLOWED=false
-NEXT_PUBLIC_MANUAL_OFFICIAL_URL=
+# No environment variables required by default.
 ```
 
 ## 部署（Cloudflare Pages）

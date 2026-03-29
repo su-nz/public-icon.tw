@@ -2,7 +2,7 @@ const DEFAULT_REPO = 'su-nz/public-icon.tw'
 
 export const SITE_NAME = 'public-icon.tw'
 export const SITE_DESCRIPTION = '台灣公共圖標導航站，支援搜尋、下載與授權資訊查詢。'
-export const REPO_NAME = process.env.NEXT_PUBLIC_GITHUB_REPO || DEFAULT_REPO
+export const REPO_NAME = DEFAULT_REPO
 
 function encodePath(pathValue: string) {
   return pathValue
