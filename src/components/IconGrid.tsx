@@ -21,7 +21,7 @@ export function IconGrid({ icons, copiedIconId, onCopyJpg, onOpenDetail }: IconG
   }
 
   return (
-    <div className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 sm:gap-4 md:grid-cols-3 xl:grid-cols-5">
+    <div className="grid grid-cols-2 gap-2 min-[420px]:grid-cols-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-5">
       {icons.map((icon) => {
         return (
           <IconCard
