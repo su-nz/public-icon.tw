@@ -1,4 +1,7 @@
 import Link from 'next/link'
+import { REPO_NAME } from '@/lib/site'
+
+const GITHUB_URL = `https://github.com/${REPO_NAME}`
 
 export function Footer() {
   return (
@@ -9,6 +12,14 @@ export function Footer() {
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-400">
             台灣公共圖標導覽與下載平台，整合 CNS16282 圖標並提供快速檢視與格式下載。
           </p>
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-5 inline-flex items-center rounded-full border border-sky-300/40 bg-sky-400/10 px-4 py-2 text-sm font-semibold text-sky-200 transition-colors hover:bg-sky-400/20 hover:text-white"
+          >
+            前往 GitHub
+          </a>
         </div>
 
         <div>

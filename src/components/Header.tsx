@@ -1,5 +1,8 @@
 import Link from 'next/link'
 import { Sparkles } from 'lucide-react'
+import { REPO_NAME } from '@/lib/site'
+
+const GITHUB_URL = `https://github.com/${REPO_NAME}`
 
 export function Header() {
   return (
@@ -25,6 +28,14 @@ export function Header() {
           <Link href="/manual" className="hidden rounded-full px-3 py-2 transition-colors hover:bg-blue-50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:inline-flex">
             說明書
           </Link>
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1 rounded-full border border-primary/20 bg-blue-50 px-3 py-2 text-primary transition-all hover:-translate-y-0.5 hover:border-primary hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          >
+            GitHub
+          </a>
         </nav>
       </div>
     </header>
