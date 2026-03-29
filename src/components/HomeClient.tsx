@@ -145,9 +145,6 @@ export function HomeClient({ inventory }: HomeClientProps) {
               </p>
               <h1 className="mt-4 break-words text-[clamp(1.9rem,8.4vw,3rem)] font-extrabold leading-tight tracking-tight text-slate-900">
                 台灣公共圖標素材庫
-                <span className="block bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  公共圖標，開源共好
-                </span>
               </h1>
               <p className="mt-4 max-w-2xl break-words text-[clamp(0.9rem,3.8vw,1rem)] leading-relaxed text-slate-600">
                 收錄 {inventory.totalCount} 個圖標，支援複製 AI / EPS / JPG 下載與官方來源索引。
