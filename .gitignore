@@ -1,0 +1,24 @@
+# dependencies
+node_modules/
+
+# next build outputs
+.next/
+out/
+
+# generated assets
+src/lib/inventory.json
+public/icons/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# local env files
+.env*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
