@@ -77,4 +77,4 @@ src/app/                 # Next.js App Router 頁面
 ## License
 
 - 圖標資料：CC BY 4.0
-- 說明書：以官方公告與手冊版權頁條款為準
+- 說明書：CC BY-NC-ND 4.0
