@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Noto_Sans_TC, Plus_Jakarta_Sans } from 'next/font/google'
 import Script from 'next/script'
 import { AppChrome } from '@/components/AppChrome'
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site'
+import { SITE_BRAND, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site'
 import './globals.css'
 
 const GA_MEASUREMENT_ID = 'G-JVPSZR55C1'
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: SITE_NAME,
-    template: `%s | ${SITE_NAME}`,
+    template: `%s | ${SITE_BRAND}`,
   },
   description: SITE_DESCRIPTION,
   alternates: {
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'zh_TW',
     url: SITE_URL,
-    title: SITE_NAME,
+    title: `${SITE_NAME} | ${SITE_BRAND}`,
     description: SITE_DESCRIPTION,
     siteName: SITE_NAME,
     images: [
@@ -42,13 +42,13 @@ export const metadata: Metadata = {
         url: '/icons/A-001.jpg',
         width: 512,
         height: 512,
-        alt: 'public-icon.tw 台灣公共圖標素材庫',
+        alt: '台灣公共圖標素材庫（public-icon.tw）',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: SITE_NAME,
+    title: `${SITE_NAME} | ${SITE_BRAND}`,
     description: SITE_DESCRIPTION,
     images: ['/icons/A-001.jpg'],
   },
