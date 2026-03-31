@@ -78,7 +78,10 @@ function DownloadLink({ href, label }: { href: string | null; label: string }) {
 export function DetailDrawer({ icon, onClose }: DetailDrawerProps) {
   const [copyStatus, setCopyStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [copyMessage, setCopyMessage] = useState('')
+  const [copyAttributionStatus, setCopyAttributionStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [copyAttributionMessage, setCopyAttributionMessage] = useState('')
   const [isMobileJpgAction, setIsMobileJpgAction] = useState(false)
+  const attributionText = '圖標來源：台灣設計研究院 (CC BY 4.0) / CNS16282 國家標準'
 
   useEffect(() => {
     const userAgent = navigator.userAgent || ''
@@ -93,6 +96,8 @@ export function DetailDrawer({ icon, onClose }: DetailDrawerProps) {
   useEffect(() => {
     setCopyStatus('idle')
     setCopyMessage('')
+    setCopyAttributionStatus('idle')
+    setCopyAttributionMessage('')
   }, [icon?.id])
 
   const aiLink = icon ? icon.filePaths.ai : null
@@ -135,6 +140,27 @@ export function DetailDrawer({ icon, onClose }: DetailDrawerProps) {
       console.error('Copy JPG failed in detail drawer', error)
       setCopyStatus('error')
       setCopyMessage('複製失敗，請改用下載')
+    }
+  }
+
+  async function handleCopyAttribution() {
+    try {
+      if (!window.isSecureContext) {
+        throw new Error('Insecure context')
+      }
+
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(attributionText)
+      } else {
+        throw new Error('Clipboard API unavailable')
+      }
+
+      setCopyAttributionStatus('success')
+      setCopyAttributionMessage('已複製來源文字到剪貼簿')
+    } catch (error) {
+      console.error('Copy attribution failed in detail drawer', error)
+      setCopyAttributionStatus('error')
+      setCopyAttributionMessage('複製失敗，請手動複製文字')
     }
   }
 
@@ -229,6 +255,19 @@ export function DetailDrawer({ icon, onClose }: DetailDrawerProps) {
             <div className="mt-5 rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
               <p className="text-sm font-bold text-emerald-900">授權：CC BY 4.0</p>
               <p className="mt-1 text-sm text-emerald-800">使用時請標註來源與授權資訊，可用於商業與非商業用途。</p>
+              <button
+                type="button"
+                onClick={handleCopyAttribution}
+                className="mt-3 inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-white px-3 text-sm font-semibold text-emerald-800 transition hover:border-emerald-300 hover:text-emerald-900"
+              >
+                <ClipboardCopy className="h-4 w-4" aria-hidden="true" />
+                {copyAttributionStatus === 'success' ? '已複製來源文字' : '複製來源文字'}
+              </button>
+              {copyAttributionMessage ? (
+                <p className={`mt-2 text-sm ${copyAttributionStatus === 'success' ? 'text-emerald-700' : 'text-rose-600'}`}>
+                  {copyAttributionMessage}
+                </p>
+              ) : null}
             </div>
 
           </motion.aside>
