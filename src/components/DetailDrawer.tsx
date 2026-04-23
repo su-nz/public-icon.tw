@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ClipboardCopy, Download, ExternalLink, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { trackIconInteraction } from '@/lib/analytics'
 import { toRepoTreeUrl } from '@/lib/site'
 import type { IconRecord } from '@/lib/types'
 
@@ -54,7 +55,15 @@ async function convertBlobToPng(blob: Blob): Promise<Blob> {
   })
 }
 
-function DownloadLink({ href, label }: { href: string | null; label: string }) {
+function DownloadLink({
+  href,
+  label,
+  onTrack,
+}: {
+  href: string | null
+  label: string
+  onTrack?: () => void
+}) {
   if (!href) {
     return (
       <span className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-400">
@@ -67,6 +76,7 @@ function DownloadLink({ href, label }: { href: string | null; label: string }) {
     <a
       href={href}
       download
+      onClick={onTrack}
       className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-semibold text-white shadow-button transition hover:-translate-y-0.5"
     >
       <Download className="h-4 w-4" aria-hidden="true" />
@@ -126,12 +136,18 @@ export function DetailDrawer({ icon, onClose }: DetailDrawerProps) {
 
       const blob = await response.blob()
 
+      let copiedFormat: 'jpg' | 'png' = 'jpg'
       try {
         const mime = blob.type || 'image/jpeg'
         await navigator.clipboard.write([new ClipboardItem({ [mime]: blob })])
       } catch {
         const pngBlob = await convertBlobToPng(blob)
         await navigator.clipboard.write([new ClipboardItem({ [pngBlob.type || 'image/png']: pngBlob })])
+        copiedFormat = 'png'
+      }
+
+      if (icon) {
+        trackIconInteraction('copy', icon, copiedFormat)
       }
 
       setCopyStatus('success')
@@ -221,9 +237,21 @@ export function DetailDrawer({ icon, onClose }: DetailDrawerProps) {
             </div>
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <DownloadLink href={jpgLink} label="JPG" />
-              <DownloadLink href={aiLink} label="AI" />
-              <DownloadLink href={epsLink} label="EPS" />
+              <DownloadLink
+                href={jpgLink}
+                label="JPG"
+                onTrack={icon ? () => trackIconInteraction('download', icon, 'jpg') : undefined}
+              />
+              <DownloadLink
+                href={aiLink}
+                label="AI"
+                onTrack={icon ? () => trackIconInteraction('download', icon, 'ai') : undefined}
+              />
+              <DownloadLink
+                href={epsLink}
+                label="EPS"
+                onTrack={icon ? () => trackIconInteraction('download', icon, 'eps') : undefined}
+              />
               {!isMobileJpgAction ? (
                 <button
                   type="button"

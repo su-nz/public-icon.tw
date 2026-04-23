@@ -7,6 +7,7 @@ import { CategoryTabs } from '@/components/CategoryTabs'
 import { DetailDrawer } from '@/components/DetailDrawer'
 import { FloatingIconCarousel } from '@/components/FloatingIconCarousel'
 import { IconGrid } from '@/components/IconGrid'
+import { trackIconInteraction } from '@/lib/analytics'
 import type { IconRecord, Inventory } from '@/lib/types'
 
 type HomeClientProps = {
@@ -147,6 +148,7 @@ export function HomeClient({ inventory }: HomeClientProps) {
         const fileName = `${icon.id}.jpg`
         const started = triggerBrowserDownload(absoluteJpgUrl, fileName)
         if (started) {
+          trackIconInteraction('download', icon, 'jpg')
           showCopyToast('success', '已開始下載 JPG')
           return
         }
@@ -173,6 +175,7 @@ export function HomeClient({ inventory }: HomeClientProps) {
 
       const blob = await response.blob()
 
+      let copiedFormat: 'jpg' | 'png' = 'jpg'
       try {
         const mime = blob.type || 'image/jpeg'
         await navigator.clipboard.write([new ClipboardItem({ [mime]: blob })])
@@ -180,6 +183,7 @@ export function HomeClient({ inventory }: HomeClientProps) {
         try {
           const pngBlob = await convertBlobToPng(blob)
           await navigator.clipboard.write([new ClipboardItem({ [pngBlob.type || 'image/png']: pngBlob })])
+          copiedFormat = 'png'
         } catch {
           const copiedUrl = await tryCopyImageUrlToClipboard(absoluteJpgUrl)
           if (!copiedUrl) {
@@ -191,6 +195,7 @@ export function HomeClient({ inventory }: HomeClientProps) {
         }
       }
 
+      trackIconInteraction('copy', icon, copiedFormat)
       showCopyToast('success', '已複製圖片到剪貼簿')
 
       setCopiedIconId(icon.id)
