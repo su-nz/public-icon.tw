@@ -10,6 +10,8 @@ export type IconFilePaths = {
   jpg: string | null
 }
 
+export type IconVariant = 'outline' | 'solid' | null
+
 export type IconRecord = {
   id: string
   name: string
@@ -17,6 +19,7 @@ export type IconRecord = {
   category: string
   categoryName: string
   standard: string
+  variant: IconVariant
   thumbnail: string | null
   files: IconFileFlags
   filePaths: IconFilePaths

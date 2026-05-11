@@ -32,7 +32,20 @@ export function IconCard({ icon, isCopied, isMobileJpgAction, onCopyJpg, onOpenD
       </div>
 
       <p className="line-clamp-1 text-sm font-bold text-slate-900">{icon.name}</p>
-      <p className="mt-1 text-xs text-slate-500">{icon.code || icon.id}</p>
+      <div className="mt-1 flex items-center gap-1.5">
+        <p className="text-xs text-slate-500">{icon.code || icon.id}</p>
+        {icon.variant ? (
+          <span
+            className={
+              icon.variant === 'outline'
+                ? 'inline-flex items-center rounded-full border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] font-semibold text-slate-600'
+                : 'inline-flex items-center rounded-full border border-slate-800 bg-slate-900 px-1.5 py-0.5 text-[10px] font-semibold text-white'
+            }
+          >
+            {icon.variant === 'outline' ? '線稿' : '實心'}
+          </span>
+        ) : null}
+      </div>
 
       <div className="mt-4 grid grid-cols-1 gap-2 opacity-100 transition-opacity duration-200 sm:grid-cols-2 md:grid-cols-1 md:opacity-0 md:group-hover:opacity-100 lg:grid-cols-2">
         {icon.filePaths.jpg ? (

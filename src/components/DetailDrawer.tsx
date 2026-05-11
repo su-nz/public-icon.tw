@@ -190,7 +190,20 @@ export function DetailDrawer({ icon, onClose }: DetailDrawerProps) {
           >
             <div className="mb-4 flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">{icon.code || icon.id}</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">{icon.code || icon.id}</p>
+                  {icon.variant ? (
+                    <span
+                      className={
+                        icon.variant === 'outline'
+                          ? 'inline-flex items-center rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-semibold text-slate-600'
+                          : 'inline-flex items-center rounded-full border border-slate-800 bg-slate-900 px-2 py-0.5 text-[10px] font-semibold text-white'
+                      }
+                    >
+                      {icon.variant === 'outline' ? '線稿' : '實心'}
+                    </span>
+                  ) : null}
+                </div>
                 <h2 className="mt-1 text-xl font-extrabold text-slate-900">{icon.name}</h2>
                 <p className="mt-1 text-sm text-slate-500">{icon.categoryName}</p>
               </div>

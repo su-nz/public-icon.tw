@@ -136,16 +136,72 @@ function buildIconId(parsed, fallbackName, iconIndex) {
   return `icon-${String(iconIndex + 1).padStart(3, '0')}`
 }
 
-function getIconFiles(fullPath) {
+function getIconVariants(fullPath, folderName) {
   const files = fs.readdirSync(fullPath, { withFileTypes: true })
     .filter((entry) => entry.isFile())
     .map((entry) => entry.name)
 
-  const aiFile = files.find((file) => file.toLowerCase().endsWith('.ai')) || null
-  const epsFile = files.find((file) => file.toLowerCase().endsWith('.eps')) || null
-  const jpgFile = files.find((file) => file.toLowerCase().endsWith('.jpg')) || null
+  const allowed = new Set(['.ai', '.eps', '.jpg'])
+  const byBase = new Map()
 
-  return { aiFile, epsFile, jpgFile }
+  for (const file of files) {
+    const ext = path.extname(file).toLowerCase()
+    if (!allowed.has(ext)) continue
+    const base = path.basename(file, path.extname(file))
+    if (!byBase.has(base)) {
+      byBase.set(base, { aiFile: null, epsFile: null, jpgFile: null })
+    }
+    const entry = byBase.get(base)
+    if (ext === '.ai') entry.aiFile = file
+    else if (ext === '.eps') entry.epsFile = file
+    else if (ext === '.jpg') entry.jpgFile = file
+  }
+
+  const normalizeForMatch = (text) => normalizeWhitespace(text).replace(/[-_]/g, '')
+  const normalizedFolder = normalizeForMatch(folderName)
+  const variants = []
+  const strays = []
+
+  const baseEntries = Array.from(byBase.entries())
+
+  if (baseEntries.length === 1) {
+    const [base, entry] = baseEntries[0]
+    variants.push({ base, variantNum: 0, ...entry })
+  } else {
+    for (const [base, entry] of baseEntries) {
+      const normalizedBase = normalizeForMatch(base)
+      let variantNum = null
+
+      if (normalizedBase === normalizedFolder) {
+        variantNum = 0
+      } else {
+        const match = normalizeWhitespace(base).match(/^(.+)_(\d+)$/)
+        if (match && normalizeForMatch(match[1]) === normalizedFolder) {
+          variantNum = parseInt(match[2], 10)
+        }
+      }
+
+      if (variantNum === null) {
+        strays.push(base)
+        continue
+      }
+
+      variants.push({ base, variantNum, ...entry })
+    }
+  }
+
+  variants.sort((a, b) => a.variantNum - b.variantNum)
+
+  if (variants.length === 2) {
+    variants[0].variant = 'outline'
+    variants[1].variant = 'solid'
+  } else {
+    for (const v of variants) {
+      v.variant = null
+    }
+  }
+
+  return { variants, strays }
 }
 
 function sortIcons(icons) {
@@ -160,7 +216,11 @@ function sortIcons(icons) {
     }
 
     if (a.code && b.code) {
-      return a.code.localeCompare(b.code, 'zh-Hant')
+      const codeCompare = a.code.localeCompare(b.code, 'zh-Hant')
+      if (codeCompare !== 0) {
+        return codeCompare
+      }
+      return a.id.localeCompare(b.id, 'en')
     }
 
     return a.name.localeCompare(b.name, 'zh-Hant')
@@ -194,75 +254,75 @@ function scanDataDir() {
       }
 
       const fullPath = path.join(dir, entry.name)
-      const { aiFile, epsFile, jpgFile } = getIconFiles(fullPath)
-      const hasIconPayload = Boolean(aiFile || epsFile || jpgFile)
+      const { variants, strays } = getIconVariants(fullPath, entry.name)
 
-      if (!hasIconPayload) {
+      if (variants.length === 0) {
         walkDir(fullPath, [...parentSegments, entry.name])
         continue
+      }
+
+      if (strays.length > 0) {
+        for (const stray of strays) {
+          console.warn(`  ⚠ Skipping stray file in ${entry.name}: ${stray}`)
+        }
       }
 
       const parsed = parseIconFolder(entry.name)
       const categoryId = inferCategoryId(parsed.prefix, parentSegments)
       const categoryMeta = CATEGORY_MAP[categoryId]
       const code = parsed.prefix && parsed.code ? `${parsed.prefix} ${parsed.code}` : ''
-
-      let iconId = buildIconId(parsed, entry.name, icons.length)
-      if (idUsage.has(iconId)) {
-        const nextCount = idUsage.get(iconId) + 1
-        idUsage.set(iconId, nextCount)
-        iconId = `${iconId}-${nextCount}`
-      } else {
-        idUsage.set(iconId, 1)
-      }
-
       const sourcePath = toPosix(path.relative(DATA_DIR, fullPath))
 
-      if (jpgFile) {
-        const srcJpg = path.join(fullPath, jpgFile)
-        const destJpg = path.join(PUBLIC_ICONS_DIR, `${iconId}.jpg`)
-        fs.copyFileSync(srcJpg, destJpg)
-      }
+      const baseIconId = buildIconId(parsed, entry.name, icons.length)
 
-      if (aiFile) {
-        const srcAi = path.join(fullPath, aiFile)
-        const destAi = path.join(PUBLIC_DOWNLOADS_DIR, `${iconId}.ai`)
-        fs.copyFileSync(srcAi, destAi)
-      }
+      variants.forEach((variant, variantIndex) => {
+        let iconId = variantIndex === 0 ? baseIconId : `${baseIconId}-${variantIndex + 1}`
 
-      if (epsFile) {
-        const srcEps = path.join(fullPath, epsFile)
-        const destEps = path.join(PUBLIC_DOWNLOADS_DIR, `${iconId}.eps`)
-        fs.copyFileSync(srcEps, destEps)
-      }
+        if (idUsage.has(iconId)) {
+          const nextCount = idUsage.get(iconId) + 1
+          idUsage.set(iconId, nextCount)
+          iconId = `${iconId}-dup${nextCount}`
+        } else {
+          idUsage.set(iconId, 1)
+        }
 
-      const files = {
-        ai: Boolean(aiFile),
-        eps: Boolean(epsFile),
-        jpg: Boolean(jpgFile),
-      }
+        const { aiFile, epsFile, jpgFile } = variant
 
-      const filePaths = {
-        ai: aiFile ? `/downloads/${iconId}.ai` : null,
-        eps: epsFile ? `/downloads/${iconId}.eps` : null,
-        jpg: jpgFile ? `/icons/${iconId}.jpg` : null,
-      }
+        if (jpgFile) {
+          fs.copyFileSync(path.join(fullPath, jpgFile), path.join(PUBLIC_ICONS_DIR, `${iconId}.jpg`))
+        }
+        if (aiFile) {
+          fs.copyFileSync(path.join(fullPath, aiFile), path.join(PUBLIC_DOWNLOADS_DIR, `${iconId}.ai`))
+        }
+        if (epsFile) {
+          fs.copyFileSync(path.join(fullPath, epsFile), path.join(PUBLIC_DOWNLOADS_DIR, `${iconId}.eps`))
+        }
 
-      icons.push({
-        id: iconId,
-        name: parsed.name || normalizeWhitespace(entry.name),
-        code,
-        category: categoryMeta ? categoryMeta.id : 'unknown',
-        categoryName: categoryMeta ? categoryMeta.name : '未分類',
-        standard: categoryMeta ? categoryMeta.standard : '',
-        thumbnail: jpgFile ? `/icons/${iconId}.jpg` : null,
-        files,
-        filePaths,
-        sourcePath,
+        icons.push({
+          id: iconId,
+          name: parsed.name || normalizeWhitespace(entry.name),
+          code,
+          category: categoryMeta ? categoryMeta.id : 'unknown',
+          categoryName: categoryMeta ? categoryMeta.name : '未分類',
+          standard: categoryMeta ? categoryMeta.standard : '',
+          variant: variant.variant,
+          thumbnail: jpgFile ? `/icons/${iconId}.jpg` : null,
+          files: {
+            ai: Boolean(aiFile),
+            eps: Boolean(epsFile),
+            jpg: Boolean(jpgFile),
+          },
+          filePaths: {
+            ai: aiFile ? `/downloads/${iconId}.ai` : null,
+            eps: epsFile ? `/downloads/${iconId}.eps` : null,
+            jpg: jpgFile ? `/icons/${iconId}.jpg` : null,
+          },
+          sourcePath,
+        })
+
+        const categoryCounterId = categoryMeta ? categoryMeta.id : 'unknown'
+        categoryCounts.set(categoryCounterId, (categoryCounts.get(categoryCounterId) || 0) + 1)
       })
-
-      const categoryCounterId = categoryMeta ? categoryMeta.id : 'unknown'
-      categoryCounts.set(categoryCounterId, (categoryCounts.get(categoryCounterId) || 0) + 1)
     }
   }
 

@@ -8,6 +8,8 @@ out/
 # generated assets
 src/lib/inventory.json
 public/icons/
+public/downloads/
+tsconfig.tsbuildinfo
 
 # logs
 npm-debug.log*
